@@ -75,7 +75,7 @@ def convert(file, out):
 if __name__ == "__main__":
     if len(sys.argv) != 3:
         print('command format: crx_to_xpi [filein] [fileout]')
-        exit()
+        sys.exit()
 
     file_in = sys.argv[1]
     file_out = sys.argv[2]
