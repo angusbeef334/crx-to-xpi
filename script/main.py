@@ -1,7 +1,8 @@
-#!/usr/bin/env python3
+#!/Users/benjamin/crx_to_xpi/script/.venv/bin/python3
 import sys
 import json
 import struct
+from runner import Converter
 
 def getMessage():
     rawLength = sys.stdin.buffer.read(4)
@@ -32,6 +33,8 @@ def main():
     while True:
         received = getMessage()
         if isinstance(received, dict) and received.get("action") == "install":
+            converter = Converter()
+            converter.convert('https://clients2.google.com/service/update2/crx?response=redirect&prodversion=136.0.0.0&acceptformat=crx2,crx3&x=id%3Dfnjlfdbkccdjdimfeodmflindgceoadi%26uc', 'out.xpi')
             sendMessage(encodeMessage({"result": "success", "reason": "success"}))
 
 if __name__ == '__main__':
