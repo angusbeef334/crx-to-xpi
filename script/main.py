@@ -31,8 +31,8 @@ def sendMessage(encodedBytes):
 def main():
     while True:
         received = getMessage()
-        if received == "ping" or (isinstance(received, dict) and received.get("type") == "ping"):
-            sendMessage(encodeMessage({"type": "pong"}))
+        if isinstance(received, dict) and received.get("action") == "install":
+            sendMessage(encodeMessage({"result": "success", "reason": "success"}))
 
 if __name__ == '__main__':
     main()
