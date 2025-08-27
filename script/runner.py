@@ -15,12 +15,12 @@ class Converter:
         is_url = self.validate_url(file)
         if not file.endswith('.crx') and not is_url:
             print('error: input file must be crx or url download')
-            return
+            return False
         if not out.endswith('.xpi'):
             out += ".xpi"
         if not is_url and not os.path.exists(file):
             print('error: input file does not exist')
-            return
+            return False
         if (is_url):
             try:
                 fd, path = tempfile.mkstemp()
@@ -32,7 +32,7 @@ class Converter:
                 file = path
             except Exception as e:
                 print(f'error: could not download file: {e}')
-                return
+                return False
         
         with zipfile.ZipFile(file, 'r') as crx:
             extract_path = 'crx_temp_' + str(random.randint(0, 1000000))
@@ -41,7 +41,7 @@ class Converter:
                 crx.extractall(path=os.path.join(tempfile.gettempdir(), extract_path))
             except Exception as e:
                 print(f'error: could not extract crx file: {e}')
-                return
+                return False
             
             print('updating manifest.json')
             try:
@@ -63,7 +63,7 @@ class Converter:
                     f.write(json.dumps(manifest_content, indent=2))
             except Exception as e:
                 print(f'error: could not update manifest.json: {e}')
-                return
+                return False
 
             try:
                 print(f'creating xpi at {out}')
@@ -71,7 +71,8 @@ class Converter:
                 shutil.move(out + '.zip', out)
             except Exception as e:
                 print(f'error: could not create xpi file: {e}')
-                return
+                return False
+        return True
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:

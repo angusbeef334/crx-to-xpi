@@ -34,8 +34,11 @@ def main():
         received = getMessage()
         if isinstance(received, dict) and received.get("action") == "install":
             converter = Converter()
-            converter.convert('https://clients2.google.com/service/update2/crx?response=redirect&prodversion=136.0.0.0&acceptformat=crx2,crx3&x=id%3Dfnjlfdbkccdjdimfeodmflindgceoadi%26uc', 'out.xpi')
-            sendMessage(encodeMessage({"result": "success", "reason": "success"}))
+            res = converter.convert('https://clients2.google.com/service/update2/crx?response=redirect&prodversion=136.0.0.0&acceptformat=crx2,crx3&x=id%3Dfnjlfdbkccdjdimfeodmflindgceoadi%26uc', 'out.xpi')
+            sendMessage(encodeMessage({
+                "result": "success" if res else "failure",
+                "reason": "success" if res else "failure"
+            }))
 
 if __name__ == '__main__':
     main()
