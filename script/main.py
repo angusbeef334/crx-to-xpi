@@ -33,9 +33,10 @@ def main():
     while True:
         received = getMessage()
         if isinstance(received, dict) and received.get("action") == "install":
+            id = received.get("message")
             converter = Converter()
             browser = Browser()
-            res = converter.convert('https://clients2.google.com/service/update2/crx?response=redirect&prodversion=136.0.0.0&acceptformat=crx2,crx3&x=id%3Dfnjlfdbkccdjdimfeodmflindgceoadi%26uc', 'out.xpi')
+            res = converter.convert(f'https://clients2.google.com/service/update2/crx?response=redirect&prodversion=136.0.0.0&acceptformat=crx2,crx3&x=id%3D{id}%26uc', 'out.xpi')
             sendMessage(encodeMessage({
                 "action": "convert",
                 "result": "success" if res else "failure",
