@@ -11,13 +11,13 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 PORT = 8000
-FILENAME = "out.xpi"
+filename = "out.xpi"
 
 class SimpleHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path in ('/', f'/{FILENAME}'):
+        if self.path in ('/', f'/{filename}'):
             try:
-                with open(FILENAME, 'rb') as f:
+                with open(filename, 'rb') as f:
                     content = f.read()
                 self.send_response(200)
                 self.send_header("Content-Type", "application/x-xpinstall")
@@ -99,9 +99,13 @@ class Converter:
         return True
 
 class Browser:
-    def install_extension(self, path, ext):
+    def serve_file(self):
         server = HTTPServer(('', PORT), SimpleHandler)
         server.serve_forever()
+
+    def install_extension(self, path):
+        self.serve_file()
+        return True
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:

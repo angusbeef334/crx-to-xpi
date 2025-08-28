@@ -1,8 +1,9 @@
 function callback(ret) {
-  alert(`[crx-to-xpi] received from native: ${JSON.stringify(ret)}`);
+  window.open('http://localhost:8000');
 }
 
 function add() {
+  //browser.management.install("/Users/benjamin/crx_to_xpi/script/out.xpi"); 
   const split = location.href.split('/');
   const id = split[split.length - 1].split('?')[0];
   browser.runtime.sendMessage({ action: "install", message: id }).then(callback);
