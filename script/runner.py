@@ -29,7 +29,7 @@ class SimpleHandler(BaseHTTPRequestHandler):
         else:
             self.send_error(404, "File not found")
         
-        threading.Thread(target=lambda: (time.sleep(1), self.server.shutdown()), daemon=True).start()
+        threading.Thread(target=lambda: (time.sleep(10), self.server.shutdown()), daemon=True).start()
 
 class Converter:
     def validate_url(self, url):
@@ -83,8 +83,12 @@ class Converter:
                     }
                 })
 
-                if manifest_content['background']['service_worker']:
-                    manifest_content['background'] = {"scripts": [manifest_content['background']['service_worker']]}
+                background = manifest_content.get('background')
+                if background and 'service_worker' in background:
+                    manifest_content['background'] = {
+                        "scripts": [background['service_worker']]
+                    }
+
 
                 with open(manifest_path, 'w') as f:
                     f.write(json.dumps(manifest_content, indent=2))
