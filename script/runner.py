@@ -2,10 +2,34 @@ import os
 import sys
 import tempfile
 import random
+import threading
 import requests
 import shutil
 import zipfile
+import time
 import json
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+PORT = 8000
+FILENAME = "out.xpi"
+
+class SimpleHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path in ('/', f'/{FILENAME}'):
+            try:
+                with open(FILENAME, 'rb') as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "application/x-xpinstall")
+                self.send_header("Content-Length", str(len(content)))
+                self.end_headers()
+                self.wfile.write(content)
+            except FileNotFoundError:
+                self.send_error(404, "File not found")
+        else:
+            self.send_error(404, "File not found")
+        
+        threading.Thread(target=lambda: (time.sleep(1), self.server.shutdown()), daemon=True).start()
 
 class Converter:
     def validate_url(self, url):
@@ -73,6 +97,11 @@ class Converter:
                 print(f'error: could not create xpi file: {e}')
                 return False
         return True
+
+class Browser:
+    def install_extension(self, path, ext):
+        server = HTTPServer(('', PORT), SimpleHandler)
+        server.serve_forever()
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:

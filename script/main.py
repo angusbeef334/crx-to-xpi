@@ -2,7 +2,7 @@
 import sys
 import json
 import struct
-from runner import Converter
+from runner import Browser, Converter
 
 def getMessage():
     rawLength = sys.stdin.buffer.read(4)
@@ -34,11 +34,12 @@ def main():
         received = getMessage()
         if isinstance(received, dict) and received.get("action") == "install":
             converter = Converter()
+            browser = Browser()
             res = converter.convert('https://clients2.google.com/service/update2/crx?response=redirect&prodversion=136.0.0.0&acceptformat=crx2,crx3&x=id%3Dfnjlfdbkccdjdimfeodmflindgceoadi%26uc', 'out.xpi')
+            res1 = browser.install_extension('', 'out.xpi')
             sendMessage(encodeMessage({
                 "result": "success" if res else "failure",
                 "reason": "success" if res else "failure"
             }))
-
 if __name__ == '__main__':
     main()
