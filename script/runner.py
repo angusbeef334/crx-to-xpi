@@ -83,6 +83,9 @@ class Converter:
                     }
                 })
 
+                if manifest_content['background']['service_worker']:
+                    manifest_content['background'] = {"scripts": [manifest_content['background']['service_worker']]}
+
                 with open(manifest_path, 'w') as f:
                     f.write(json.dumps(manifest_content, indent=2))
             except Exception as e:
