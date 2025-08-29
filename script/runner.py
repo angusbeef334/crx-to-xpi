@@ -18,17 +18,21 @@ class SimpleHandler(BaseHTTPRequestHandler):
         if self.path in ('/', f'/{filename}'):
             try:
                 with open(filename, 'rb') as f:
-                    content = f.read()
-                self.send_response(200)
-                self.send_header("Content-Type", "application/x-xpinstall")
-                self.send_header("Content-Length", str(len(content)))
-                self.end_headers()
-                self.wfile.write(content)
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/x-xpinstall")
+                    fs = os.fstat(f.fileno())
+                    self.send_header("Content-Length", str(fs.st_size))
+                    self.end_headers()
+                    chunk_size = 64 * 1024  # 64KB
+                    while True:
+                        chunk = f.read(chunk_size)
+                        if not chunk:
+                            break
+                        self.wfile.write(chunk)
             except FileNotFoundError:
                 self.send_error(404, "File not found")
         else:
             self.send_error(404, "File not found")
-        
         threading.Thread(target=lambda: (time.sleep(10), self.server.shutdown()), daemon=True).start()
 
 class Converter:
