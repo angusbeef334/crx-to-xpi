@@ -1,6 +1,7 @@
 # crx-to-xpi
 Chrome extensions and Web Store for Firefox
 Note: due to extension signing requirements from Mozilla, this extension can only work with Firefox ESR, Nightly, and Developer editions.
+Note: some large extension files (currently) may fail silently with a connection reset error in the browser console.
 
 ## Installation
 1. Open `about:config` and search for xpinstall.signatures.required
