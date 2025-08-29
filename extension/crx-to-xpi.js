@@ -5,7 +5,12 @@ function callback(ret) {
 function add() {
   const split = location.href.split('/');
   const id = split[split.length - 1].split('?')[0];
-  browser.runtime.sendMessage({ action: "install", message: id }).then(callback);
+  browser.runtime.sendMessage({ action: "install", message: id })
+    .then(callback)
+    .catch((error) => {
+      console.log(`Failed to install extension: ${error}`);
+      alert(`Failed to install extension: ${error}`);
+    });
 }
 
 function replace() {
@@ -13,7 +18,7 @@ function replace() {
   const newbtn = document.createElement("button");
   newbtn.textContent = "Add to Firefox";
   newbtn.addEventListener('click', () => add());
-  btn.replaceWith(newbtn);
+  if (btn && newbtn) btn.replaceWith(newbtn);
 }
 
 setInterval(replace, 1000);
