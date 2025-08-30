@@ -1,8 +1,10 @@
-#!/Users/benjamin/crx_to_xpi/script/.venv/bin/python3
+#!/home/benjamin/coding/crx-to-xpi/script/.venv/bin/python3
 import sys
 import json
 import struct
 from runner import Browser, Converter
+
+version = "136.0.0.0"
 
 def getMessage():
     rawLength = sys.stdin.buffer.read(4)
@@ -36,17 +38,17 @@ def main():
             id = received.get("message")
             converter = Converter()
             browser = Browser()
-            res = converter.convert(f'https://clients2.google.com/service/update2/crx?response=redirect&prodversion=136.0.0.0&acceptformat=crx2,crx3&x=id%3D{id}%26uc', 'out.xpi')
+            res = converter.convert(f'https://clients2.google.com/service/update2/crx?response=redirect&prodversion={version}&acceptformat=crx2,crx3&x=id%3D{id}%26uc', 'out.xpi')
             sendMessage(encodeMessage({
                 "action": "convert",
-                "result": "success" if res else "failure",
-                "reason": "success" if res else "failure",
+                "result": "success" if res == 'success' else "failure",
+                "reason": res,
             }))
             res1 = browser.install_extension('out.xpi')
             sendMessage(encodeMessage({
                 "action": "install",
-                "result": "success" if res1 else "failure",
-                "reason": "success" if res1 else "failure",
+                "result": "success" if res1 == 'success' else "failure",
+                "reason": res,
             }))
 
 if __name__ == '__main__':

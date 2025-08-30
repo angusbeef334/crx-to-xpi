@@ -1,7 +1,7 @@
 {
   "name": "crx_to_xpi",
   "description": "thingy",
-  "path": "/Users/benjamin/crx_to_xpi/script/main.py",
+	"path": "/home/benjamin/coding/crx-to-xpi/script/main.py",
   "type": "stdio",
   "allowed_extensions": [ "crx-to-xpi@angusbeef334.github.io" ]
 }
