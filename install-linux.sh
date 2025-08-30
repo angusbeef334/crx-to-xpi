@@ -4,8 +4,6 @@ if !(command -v "python3"); then
 	if !(command -v "python"); then
 		echo "python not found, install to continue"
 		exit
-	else
-		echo "fatty"
 	fi
 fi
 
@@ -15,7 +13,6 @@ if !(command -v "sed"); then
 fi
 
 echo "Creating venv"
-cd script
 if !(python3 -m venv .venv); then
 	echo "Failed to create venv"
 	exit
