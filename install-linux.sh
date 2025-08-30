@@ -2,14 +2,106 @@
 
 if !(command -v "python3"); then
 	if !(command -v "python"); then
-		echo "python not found, install to continue"
-		exit
+		if command -v "pacman"; then
+			echo "python not found, pacman detected, install python3 with pacman? [y/N] "
+			read install
+			if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
+				if sudo pacman -S python3; then
+					echo "successful install"
+				else
+					echo "failed to install python3 with pacman"
+					exit
+				fi
+			else
+				echo "abort"
+				exit
+			fi
+		else if command -v "apt-get"; then
+			echo "python not found, apt-get detected, install python3 with apt-get? [y/N] "
+			read install
+			if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
+				if sudo apt-get install python3; then
+					echo "successful install"
+				else
+					echo "failed to install python3 with apt-get"
+					exit
+				fi
+			else
+				echo "abort"
+				exit
+			fi
+		fi
+		else if command -v "dnf"; then
+			echo "python not found, dnf detected, install python3 with dnf? [y/N] "
+			read install
+			read install
+			if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
+				if sudo dnf install python3; then
+					echo "successful install"
+				else
+					echo "failed to install python3 with dnf"
+					exit
+				fi
+			else
+				echo "abort"
+				exit
+			fi
+		else 
+			echo "python not found, no supported package manager detected, install to continue"
+			exit
+		fi
 	fi
 fi
 
 if !(command -v "sed"); then
-	echo "sed not found, install to continue"
-	exit
+	if command -v "pacman"; then
+		echo "sed not found, pacman detected, install sed with pacman? [y/N] "
+		read install
+		if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
+			if sudo pacman -S sed; then
+				echo "successful install"
+			else
+				echo "failed to install sed with pacman"
+				exit
+			fi
+		else
+			echo "abort"
+			exit
+		fi
+	else if command -v "apt-get"; then
+		echo "sed not found, apt-get detected, install sed with apt-get? [y/N] "
+		read install
+		if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
+			if sudo apt-get install sed; then
+				echo "successful install"
+			else
+				echo "failed to install sed with apt-get"
+				exit
+			fi
+		else
+			echo "abort"
+			exit
+		fi
+	fi
+	else if command -v "dnf"; then
+		echo "sed not found, dnf detected, install sed with dnf? [y/N] "
+		read install
+		read install
+		if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
+			if sudo dnf install sed; then
+				echo "successful install"
+			else
+				echo "failed to install sed with dnf"
+				exit
+			fi
+		else
+			echo "abort"
+			exit
+		fi
+	else 
+		echo "sed not found, no supported package manager detected, install to continue"
+		exit
+	fi
 fi
 
 echo "Creating venv"
