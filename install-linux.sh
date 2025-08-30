@@ -1,59 +1,56 @@
 #!/bin/sh
 
-if !(command -v "python3"); then
-	if !(command -v "python"); then
-		if command -v "pacman"; then
-			echo "python not found, pacman detected, install python3 with pacman? [y/N] "
-			read install
-			if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
-				if sudo pacman -S python3; then
-					echo "successful install"
-				else
-					echo "failed to install python3 with pacman"
-					exit
-				fi
+python_install() {
+	if command -v "pacman"; then
+		echo "python not found, pacman detected, install python3 with pacman? [y/N] "
+		read install
+		if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
+			if sudo pacman -S python3; then
+				echo "successful install"
 			else
-				echo "abort"
+				echo "failed to install python3 with pacman"
 				exit
 			fi
-		else if command -v "apt-get"; then
-			echo "python not found, apt-get detected, install python3 with apt-get? [y/N] "
-			read install
-			if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
-				if sudo apt-get install python3; then
-					echo "successful install"
-				else
-					echo "failed to install python3 with apt-get"
-					exit
-				fi
-			else
-				echo "abort"
-				exit
-			fi
-		fi
-		else if command -v "dnf"; then
-			echo "python not found, dnf detected, install python3 with dnf? [y/N] "
-			read install
-			read install
-			if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
-				if sudo dnf install python3; then
-					echo "successful install"
-				else
-					echo "failed to install python3 with dnf"
-					exit
-				fi
-			else
-				echo "abort"
-				exit
-			fi
-		else 
-			echo "python not found, no supported package manager detected, install to continue"
+		else
+			echo "abort"
 			exit
 		fi
+	elif command -v "apt-get"; then
+		echo "python not found, apt-get detected, install python3 with apt-get? [y/N] "
+		read install
+		if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
+			if sudo apt-get install python3; then
+				echo "successful install"
+			else
+				echo "failed to install python3 with apt-get"
+				exit
+			fi
+		else
+			echo "abort"
+			exit
+		fi
+	elif command -v "dnf"; then
+		echo "python not found, dnf detected, install python3 with dnf? [y/N] "
+		read install
+		read install
+		if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
+			if sudo dnf install python3; then
+				echo "successful install"
+			else
+				echo "failed to install python3 with dnf"
+				exit
+			fi
+		else
+			echo "abort"
+			exit
+		fi
+	else 
+		echo "python not found, no supported package manager detected, install to continue"
+		exit
 	fi
-fi
+}
 
-if !(command -v "sed"); then
+sed_install() {
 	if command -v "pacman"; then
 		echo "sed not found, pacman detected, install sed with pacman? [y/N] "
 		read install
@@ -68,7 +65,7 @@ if !(command -v "sed"); then
 			echo "abort"
 			exit
 		fi
-	else if command -v "apt-get"; then
+	elif command -v "apt-get"; then
 		echo "sed not found, apt-get detected, install sed with apt-get? [y/N] "
 		read install
 		if [ "$install" = "y" ] || [ "$install" = "Y" ]; then
@@ -82,8 +79,7 @@ if !(command -v "sed"); then
 			echo "abort"
 			exit
 		fi
-	fi
-	else if command -v "dnf"; then
+	elif command -v "dnf"; then
 		echo "sed not found, dnf detected, install sed with dnf? [y/N] "
 		read install
 		read install
@@ -102,6 +98,16 @@ if !(command -v "sed"); then
 		echo "sed not found, no supported package manager detected, install to continue"
 		exit
 	fi
+}
+
+if !(command -v "python31"); then
+	if !(command -v "python1"); then
+		python_install
+	fi
+fi
+
+if !(command -v "sed"); then
+	sed_install
 fi
 
 echo "Creating venv"
