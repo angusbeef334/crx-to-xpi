@@ -100,9 +100,14 @@ sed_install() {
 	fi
 }
 
-if !(command -v "python31"); then
-	if !(command -v "python1"); then
+if !(command -v "python3"); then
+	if !(command -v "python"); then
 		python_install
+	else
+		version=$(python --version)
+		if [[ $version != "Python 3"* ]]; then
+			python_install
+		fi
 	fi
 fi
 
