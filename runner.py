@@ -28,7 +28,10 @@ class SimpleHandler(BaseHTTPRequestHandler):
                         chunk = f.read(chunk_size)
                         if not chunk:
                             break
-                        self.wfile.write(chunk)
+                        try:
+                            self.wfile.write(chunk)
+                        except ConnectionResetError:
+                            break
             except FileNotFoundError:
                 self.send_error(404, "File not found")
         else:
@@ -115,7 +118,8 @@ class Browser:
         server.serve_forever()
 
     def install_extension(self, path):
-        self.serve_file()
+        thread = threading.Thread(target=self.serve_file)
+        thread.start()
         return True
 
 if __name__ == "__main__":
