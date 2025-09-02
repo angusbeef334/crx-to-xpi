@@ -21,13 +21,12 @@ function add() {
 
 function install() {
   window.open('http://localhost:8000');
-  document.getElementById('crx-to-xpi-install').innerText = "Installed";
-  installing = false;
+  location.reload();
 }
 
 function replace() {
   if (installing) return;
-  const btn = document.getElementsByClassName('UywwFc-LgbsSe UywwFc-LgbsSe-OWXEXe-dgl2Hf UywwFc-StrnGf-YYd4I-VtOx3e UywwFc-kSE8rc-FoKg4d-sLO9V-YoZ4jf')[0] || document.getElementById('crx-to-xpi-install');
+  const btn = document.getElementsByClassName('UywwFc-LgbsSe UywwFc-LgbsSe-OWXEXe-dgl2Hf UywwFc-StrnGf-YYd4I-VtOx3e UywwFc-kSE8rc-FoKg4d-sLO9V-YoZ4jf')[0];
   const newbtn = document.createElement("button");
   newbtn.id = "crx-to-xpi-install";
   newbtn.textContent = "Add to Firefox";
