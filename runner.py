@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import tempfile
 import random
@@ -85,7 +86,7 @@ class Converter:
                 manifest_content.update({
                     'browser_specific_settings': {
                         'gecko': {
-                            'id': f'{package_name.lower().replace(" ", "_")}@example.com'
+                            'id': f'{re.sub(r"[^a-z0-9\-._]", "_", package_name.lower())}@example.com'
                         }
                     }
                 })
