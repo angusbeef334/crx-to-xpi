@@ -41,7 +41,7 @@ class SimpleHandler(BaseHTTPRequestHandler):
                 self.send_error(404, "File not found")
         else:
             self.send_error(404, "File not found")
-        threading.Thread(target=lambda: (time.sleep(10), self.server.shutdown()), daemon=True).start()
+        threading.Thread(target=lambda: (time.sleep(0.1), self.server.shutdown()), daemon=True).start()
 
 class Converter:
     def validate_url(self, url):
