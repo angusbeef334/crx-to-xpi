@@ -14,10 +14,10 @@ jobs:
         include:
           - os: ubuntu-latest
             artifact_name: crx-to-xpi_linux_x64
-            binary_extension: ''
+            binary_extension: '_linux_x64'
           - os: macos-latest
             artifact_name: crx-to-xpi_mac_universal
-            binary_extension: ''
+            binary_extension: '_mac_universal'
           - os: windows-latest
             artifact_name: crx-to-xpi_win_x64
             binary_extension: '.exe'
@@ -53,25 +53,25 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         source venv/bin/activate
-        pyinstaller --onefile --target-architecture universal2 main.py
+        pyinstaller --onefile --target-architecture universal2 crx-to-xpi.py
 
     - name: Build with PyInstaller (linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
         source venv/bin/activate
-        pyinstaller --onefile main.py
+        pyinstaller --onefile crx-to-xpi.py
 
     - name: Build with PyInstaller (win)
       if: matrix.os == 'windows-latest'
       run: |
         venv\Scripts\activate.ps1
-        pyinstaller --onefile main.py
+        pyinstaller --onefile crx-to-xpi.py
 
     - name: Upload binary artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.artifact_name }}
-        path: dist/main${{ matrix.binary_extension }}
+        path: dist/crx-to-xpi${{ matrix.binary_extension }}
 
   create-release:
     needs: build
@@ -88,9 +88,9 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          ./artifacts/crx-to-xpi_linux_x64/main
-          ./artifacts/crx-to-xpi_mac_universal/main
-          ./artifacts/crx-to-xpi_win_x64/main.exe
+          ./artifacts/crx-to-xpi_linux_x64/crx-to-xpi_linux_x64
+          ./artifacts/crx-to-xpi_mac_universal/crx-to-xpi_mac_universal
+          ./artifacts/crx-to-xpi_win_x64/crx-to-xpi.exe
         tag_name: ${{ github.ref }}
         name: Release ${{ github.ref_name }}
       env:
