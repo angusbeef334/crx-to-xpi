@@ -70,17 +70,20 @@ jobs:
         venv\Scripts\activate.ps1
         pyinstaller --onefile crx-to-xpi.py
 
-    - name: Rename binaries
+    - name: Rename binary (linux)
+      if: matrix.os == 'ubuntu-latest'
       run: |
-        # Rename the binary to include platform info
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          cp dist/crx-to-xpi dist/crx-to-xpi-linux-x64
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          cp dist/crx-to-xpi dist/crx-to-xpi-mac-universal
-        else
-          # Windows - already has .exe extension
-          cp dist/crx-to-xpi.exe dist/crx-to-xpi-win-x64.exe
-        fi
+        cp dist/crx-to-xpi dist/crx-to-xpi-linux-x64
+
+    - name: Rename binary (mac)
+      if: matrix.os == 'mac-latest'
+      run: |
+        cp dist/crx-to-xpi dist/crx-to-xpi-mac-universal
+
+    - name: Rename binary (win)
+      if: matrix.os == 'windows-latest'
+      run: |
+        Copy-Item dist/crx-to-xpi.exe dist/crx-to-xpi-win-x64.exe
 
     - name: Upload binary artifact
       uses: actions/upload-artifact@v4
