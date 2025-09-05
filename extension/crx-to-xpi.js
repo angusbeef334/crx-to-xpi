@@ -1,7 +1,8 @@
 let installing = false;
 let timeout = null;
 
-function add(button) {
+function add(e) {
+  const button = e.target;
   installing = true;
   button.textContent = "Converting...";
   const split = location.href.split('/');
@@ -37,7 +38,7 @@ function replace() {
   const newbtn = document.createElement("button");
   newbtn.id = "crx-to-xpi-install";
   newbtn.textContent = "Add to Firefox";
-  newbtn.addEventListener('click', (e) => add(e.target));
+  newbtn.addEventListener('click', add);
   if (btn && newbtn) btn.replaceWith(newbtn);
 }
 
