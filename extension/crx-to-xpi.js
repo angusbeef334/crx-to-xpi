@@ -1,17 +1,16 @@
 let installing = false;
 let timeout = null;
 
-function add() {
+function add(button) {
   installing = true;
-  let button = document.getElementById('crx-to-xpi-install');
-  button.innerText = "Converting...";
+  button.textContent = "Converting...";
   const split = location.href.split('/');
   const id = split[split.length - 1].split('?')[0];
   browser.runtime.sendMessage({ action: "install", message: id })
     .then(() => {
       button.removeEventListener('click', add);
       button.addEventListener('click', install);
-      button.innerText = "Install";
+      button.textContent = "Install";
       timeout = setTimeout(() => {
         installing = false;
       }, 5000);
@@ -19,7 +18,7 @@ function add() {
     .catch((error) => {
       console.log(`Failed to install extension: ${error}`);
       alert(`Failed to install extension: ${error}`);
-      document.getElementById('crx-to-xpi-install').innerText = "Add to Firefox";
+      document.getElementById('crx-to-xpi-install').textContent = "Add to Firefox";
     });
 }
 
@@ -38,7 +37,7 @@ function replace() {
   const newbtn = document.createElement("button");
   newbtn.id = "crx-to-xpi-install";
   newbtn.textContent = "Add to Firefox";
-  newbtn.addEventListener('click', () => add());
+  newbtn.addEventListener('click', (e) => add(e.target));
   if (btn && newbtn) btn.replaceWith(newbtn);
 }
 
