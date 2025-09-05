@@ -92,6 +92,6 @@ jobs:
           ./artifacts/crx-to-xpi_mac_universal/main
           ./artifacts/crx-to-xpi_win_x64/main.exe
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
