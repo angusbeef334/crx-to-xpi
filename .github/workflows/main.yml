@@ -76,7 +76,7 @@ jobs:
         cp dist/crx-to-xpi dist/crx-to-xpi-linux-x64
 
     - name: Rename binary (mac)
-      if: matrix.os == 'mac-latest'
+      if: matrix.os == 'macos-latest'
       run: |
         cp dist/crx-to-xpi dist/crx-to-xpi-mac-universal
 
