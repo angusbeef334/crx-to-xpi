@@ -43,7 +43,7 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         source venv/bin/activate
-        pyinstaller --onefile --target-architecture arm64,x86_64 main.py
+        pyinstaller --onefile --target-architecture universal2 main.py
 
     - name: Build with PyInstaller (linux)
       if: matrix.os == 'ubuntu-latest'
