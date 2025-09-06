@@ -97,7 +97,7 @@ jobs:
     - name: Package extension
       if: matrix.os == 'ubuntu-latest'
       run: |
-        zip -r dist/crx-to-xpi.xpi extension/
+        cd extension && zip -r ../dist/crx-to-xpi.xpi .
 
     - name: Upload binary artifacts
       uses: actions/upload-artifact@v4
