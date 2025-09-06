@@ -4,6 +4,7 @@ import requests
 import shutil
 import urllib.request
 import stat
+import winreg
 
 manifest = {
     "name": "crx_to_xpi",
@@ -47,7 +48,15 @@ def register(platform):
             with open(os.path.join(directory, 'crx_to_xpi.json'), 'w') as f:
                 f.write(str(manifest))
         case 'win32':
-            pass
+            manifest_path = os.path.join(os.getcwd(), 'crx-to-xpi', 'crx-to-xpi.json')
+            with open(manifest_path, 'w') as f:
+                f.write(str(manifest))
+
+            reg_path = r"SOFTWARE\Mozilla\NativeMessagingHosts\crx-to-xpi"
+            key = winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER, reg_path, 0, winreg.KEY_SET_VALUE)
+            winreg.SetValueEx(key, None, 0, winreg.REG_SZ, manifest_path)
+
+            winreg.CloseKey(key)
         case _:
             print('os not supported')
 
