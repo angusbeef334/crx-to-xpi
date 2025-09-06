@@ -25,7 +25,7 @@ jobs:
           - os: windows-latest
             artifact_name: crx-to-xpi_win32
             binary_name: crx-to-xpi.exe
-            release_name: crx-to-xpi-win32
+            release_name: crx-to-xpi-win32.exe
             installer_file: install-win-x64.exe
 
     steps:
@@ -129,7 +129,7 @@ jobs:
           ./artifacts/crx-to-xpi_darwin/install-darwin-universal
           ./artifacts/crx-to-xpi_win32/crx-to-xpi-win32.exe
           ./artifacts/crx-to-xpi_win32/install-win-x64.exe
-          ./artifacts/crx-to-xpi.xpi
+          ./artifacts/crx-to-xpi_linux/crx-to-xpi.xpi
         tag_name: ${{ github.ref }}
         name: Release ${{ github.ref_name }}
       env:
