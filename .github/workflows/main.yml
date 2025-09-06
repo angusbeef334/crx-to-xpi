@@ -13,17 +13,20 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         include:
           - os: ubuntu-latest
-            artifact_name: crx-to-xpi_linux_x64
+            artifact_name: crx-to-xpi_linux
             binary_name: crx-to-xpi
-            release_name: crx-to-xpi-linux-x64
+            release_name: crx-to-xpi-linux
+            installer_file: install-linux-x64
           - os: macos-latest
-            artifact_name: crx-to-xpi_mac_universal
+            artifact_name: crx-to-xpi_darwin
             binary_name: crx-to-xpi
-            release_name: crx-to-xpi-mac-universal
+            release_name: crx-to-xpi-darwin
+            installer_file: install-darwin-universal
           - os: windows-latest
-            artifact_name: crx-to-xpi_win_x64
+            artifact_name: crx-to-xpi_win32
             binary_name: crx-to-xpi.exe
-            release_name: crx-to-xpi-win-x64.exe
+            release_name: crx-to-xpi-win32
+            installer_file: install-win-x64.exe
 
     steps:
     - name: Checkout code
@@ -57,39 +60,47 @@ jobs:
       run: |
         source venv/bin/activate
         pyinstaller --onefile --target-architecture universal2 crx-to-xpi.py
+        pyinstaller --onefile --target-architecture universal2 install.py
 
     - name: Build with PyInstaller (linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
         source venv/bin/activate
         pyinstaller --onefile crx-to-xpi.py
+        pyinstaller --onefile install.py
 
     - name: Build with PyInstaller (win)
       if: matrix.os == 'windows-latest'
       run: |
         venv\Scripts\activate.ps1
         pyinstaller --onefile crx-to-xpi.py
+        pyinstaller --onefile install.py
 
     - name: Rename binary (linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
-        cp dist/crx-to-xpi dist/crx-to-xpi-linux-x64
+        cp dist/crx-to-xpi dist/crx-to-xpi-linux
+        cp dist/install dist/install-linux-x64
 
     - name: Rename binary (mac)
       if: matrix.os == 'macos-latest'
       run: |
-        cp dist/crx-to-xpi dist/crx-to-xpi-mac-universal
+        cp dist/crx-to-xpi dist/crx-to-xpi-darwin
+        cp dist/install dist/install-darwin-universal
 
     - name: Rename binary (win)
       if: matrix.os == 'windows-latest'
       run: |
-        Copy-Item dist/crx-to-xpi.exe dist/crx-to-xpi-win-x64.exe
+        Copy-Item dist/crx-to-xpi.exe dist/crx-to-xpi-win32
+        Copy-Item dist/install.exe dist/install-win-x64.exe
 
-    - name: Upload binary artifact
+    - name: Upload binary artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.artifact_name }}
-        path: dist/${{ matrix.release_name }}
+        path: |
+          dist/${{ matrix.release_name }}
+          dist/${{ matrix.installer_file }}
 
   create-release:
     needs: build
@@ -106,9 +117,12 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          ./artifacts/crx-to-xpi_linux_x64/crx-to-xpi-linux-x64
-          ./artifacts/crx-to-xpi_mac_universal/crx-to-xpi-mac-universal
-          ./artifacts/crx-to-xpi_win_x64/crx-to-xpi-win-x64.exe
+          ./artifacts/crx-to-xpi_linux/crx-to-xpi-linux
+          ./artifacts/crx-to-xpi_linux/install-linux-x64
+          ./artifacts/crx-to-xpi_darwin/crx-to-xpi-darwin
+          ./artifacts/crx-to-xpi_darwin/install-darwin-universal
+          ./artifacts/crx-to-xpi_win32/crx-to-xpi-win32.exe
+          ./artifacts/crx-to-xpi_win32/install-win-x64.exe
         tag_name: ${{ github.ref }}
         name: Release ${{ github.ref_name }}
       env:
