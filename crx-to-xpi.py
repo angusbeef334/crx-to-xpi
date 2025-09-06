@@ -1,4 +1,3 @@
-#!/home/benjamin/coding/crx-to-xpi/.venv/bin/python3
 import sys
 import json
 import struct
