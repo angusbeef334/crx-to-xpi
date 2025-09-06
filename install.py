@@ -4,7 +4,9 @@ import requests
 import shutil
 import urllib.request
 import stat
-import winreg
+if sys.platform == 'win32': import winreg
+else: winreg = None
+import json
 
 manifest = {
     "name": "crx_to_xpi",
@@ -41,16 +43,16 @@ def register(platform):
             directory = f'{os.path.expanduser('~')}/.mozilla/native-messaging-hosts/'
             os.makedirs(directory, exist_ok=True)
             with open(os.path.join(directory, 'crx_to_xpi.json'), 'w') as f:
-                f.write(str(manifest).replace("'", '"'))
+                json.dump(manifest, f, indent=4)
         case 'darwin':
             directory = f'{os.path.expanduser('~')}/Library/Application Support/Mozilla/NativeMessagingHosts/'
             os.makedirs(directory, exist_ok=True)
             with open(os.path.join(directory, 'crx_to_xpi.json'), 'w') as f:
-                f.write(str(manifest))
+                json.dump(manifest, f, indent=4)
         case 'win32':
             manifest_path = os.path.join(os.getcwd(), 'crx-to-xpi', 'crx-to-xpi.json')
             with open(manifest_path, 'w') as f:
-                f.write(str(manifest))
+                json.dump(manifest, f, indent=4)
 
             reg_path = r"SOFTWARE\Mozilla\NativeMessagingHosts\crx-to-xpi"
             key = winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER, reg_path, 0, winreg.KEY_SET_VALUE)
