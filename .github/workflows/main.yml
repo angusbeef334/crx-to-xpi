@@ -93,6 +93,11 @@ jobs:
       run: |
         Copy-Item dist/crx-to-xpi.exe dist/crx-to-xpi-win32.exe
         Copy-Item dist/install.exe dist/install-win-x64.exe
+    
+    - name: Package extension
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        zip -r dist/crx-to-xpi.xpi extension/
 
     - name: Upload binary artifacts
       uses: actions/upload-artifact@v4
@@ -101,9 +106,10 @@ jobs:
         path: |
           dist/${{ matrix.release_name }}
           dist/${{ matrix.installer_file }}
+          dist/crx-to-xpi.xpi
 
   create-release:
-    needs: build
+    needs: [build]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     
@@ -123,6 +129,7 @@ jobs:
           ./artifacts/crx-to-xpi_darwin/install-darwin-universal
           ./artifacts/crx-to-xpi_win32/crx-to-xpi-win32.exe
           ./artifacts/crx-to-xpi_win32/install-win-x64.exe
+          ./artifacts/crx-to-xpi.xpi
         tag_name: ${{ github.ref }}
         name: Release ${{ github.ref_name }}
       env:
