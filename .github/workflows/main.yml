@@ -91,7 +91,7 @@ jobs:
     - name: Rename binary (win)
       if: matrix.os == 'windows-latest'
       run: |
-        Copy-Item dist/crx-to-xpi.exe dist/crx-to-xpi-win32
+        Copy-Item dist/crx-to-xpi.exe dist/crx-to-xpi-win32.exe
         Copy-Item dist/install.exe dist/install-win-x64.exe
 
     - name: Upload binary artifacts
