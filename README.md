@@ -23,14 +23,14 @@ On Linux, when running the install script, an error may be thrown such as the fo
 To fix this, you must install the ca-certificates package for your distro.
 Arch:
 ```
-# sudo pacman -S ca-certificates
+# pacman -S ca-certificates
 # update-ca-trust
 ```
 
 Debian: 
 ```
-# sudo apt install ca-certificates
-# sudo update-ca-certificates
+# apt install ca-certificates
+# update-ca-certificates
 ```
 Fedora: 
 ```
