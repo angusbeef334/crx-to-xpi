@@ -9,18 +9,19 @@ Note: While installing extensions in the Chrome Web Store, you will need to conf
 * Download `crx-to-xpi.xpi` from the Releases page. This will trigger an install automatically in Firefox.
 
 ## Installation
-1. Download the install script corresponding to your platform from Releases, and `chmod +x` for Linux and Mac.
-2. Move the file to an installation directory (warning, if there is a directory named `crx-to-xpi` in the install script's working directory, it will be deleted)
-3. Run the install script. It will download the native app and register it with Firefox.
-4. Restart Firefox.
-5. Navigate to the Chrome Web Store to test.
+1. Download the install script corresponding to your platform from Releases.
+2. For Linux and Mac systems, in the directory that the install file is located, run `chmod +x install-linux-x64` for linux, or `chmod +x install-darwin-universal`
+3. Move the file to an installation directory (warning, if there is a directory named `crx-to-xpi` in the install script's working directory, it will be deleted)
+4. Run the install script. It will download the native app and register it with Firefox.
+5. Restart Firefox.
+6. Navigate to the Chrome Web Store to test installing of an extension.
 
 ## Troubleshooting
 ### Installation
 On Linux, when running the install script, an error may be thrown such as the following:
 `urllib.error.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032)>`
 
-To fix this, you must install the ca-certificates package for your distro.\
+To fix this, you must install the ca-certificates package for your distro.
 
 Arch:
 ```
@@ -46,3 +47,5 @@ If it still does not work, try:\
 and if that outputs a location:\
 `export SSL_CERT_FILE=$(python -m certifi)`\
 and rerun the script.
+
+On Mac, even after adding executable permissions to the file, you may be denied permission by the system to run the file. To fix this, navigate to System Settings -> Privacy and Security, scroll down, then allow the app to run.
