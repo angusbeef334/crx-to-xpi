@@ -18,10 +18,10 @@ Note: While installing extensions in the Chrome Web Store, you will need to conf
 
 ## Troubleshooting
 ### Installation
-On Linux, when running the install script, an error may be thrown such as the following:
+When running the install script, an error may be thrown such as the following:
 `urllib.error.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032)>`
 
-To fix this, you must install the ca-certificates package for your distro.
+To fix this, you must install the ca-certificates package for your OS.
 
 Arch:
 ```
@@ -40,11 +40,12 @@ Fedora:
 # update-ca-trust
 ```
 
-Then restart your terminal.
+Mac (Homebrew):
+```
+# brew install certifi
+```
+Then:
 
-If it still does not work, try:\
-`python -m certifi`\
-and if that outputs a location:\
 `export SSL_CERT_FILE=$(python -m certifi)`\
 and rerun the script.
 
