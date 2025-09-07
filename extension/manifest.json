@@ -1,12 +1,13 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "crx-to-xpi",
   "version": "1.0",
 
   "description": "Chrome extensions for Firefox",
 
   "icons": {
-    "48": "icons/border-48.png"
+    "32": "icons/fox-32.png",
+    "64": "icons/fox-64.png"
   },
 
   "content_scripts": [
@@ -26,8 +27,9 @@
     "scripts": ["background.js"]
   },
 
-  "browser_action": {
-    "default_icon": "icons/message.svg"
+  "action": {
+    "default_icon": "icons/fox-32.png",
+    "default_title": "crx-to-xpi"
   },
 
   "permissions": ["nativeMessaging"]
