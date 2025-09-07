@@ -89,7 +89,7 @@ class Converter:
                 manifest_content.update({
                     'browser_specific_settings': {
                         'gecko': {
-                            'id': f'{re.sub(r"[^a-z0-9\-._]", "_", package_name.lower())}@example.com'
+                            'id': f'{re.sub(r"[^a-z0-9\-._]", "_", package_name.lower())}@crx-to-xpi'
                         }
                     }
                 })
