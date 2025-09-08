@@ -14,7 +14,7 @@ import tkinter.scrolledtext
 
 root = tkinter.Tk()
 frm = tkinter.ttk.Frame(root, padding=10)
-textbox = tkinter.scrolledtext.ScrolledText(root, wrap=tkinter.WORD, width=60, height=20, state="normal")
+textbox = tkinter.scrolledtext.ScrolledText(root, wrap=tkinter.WORD, width=100, height=20, state="normal")
 textbox.pack(padx=10, pady=10, fill=tkinter.BOTH, expand=True)
 
 manifest = {
@@ -74,7 +74,7 @@ def register(platform):
             with open(manifest_path, 'w') as f:
                 json.dump(manifest, f, indent=4)
 
-            reg_path = r"SOFTWARE\Mozilla\NativeMessagingHosts\crx-to-xpi"
+            reg_path = r"SOFTWARE\Mozilla\NativeMessagingHosts\crx_to_xpi"
             key = winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER, reg_path, 0, winreg.KEY_SET_VALUE)
             winreg.SetValueEx(key, None, 0, winreg.REG_SZ, manifest_path)
 
@@ -95,6 +95,6 @@ if __name__ == "__main__":
     button.pack(pady=5)
 
     button1 = tkinter.ttk.Button(root, text="Close", command=lambda: exit())
-    button1.pack(pady=10)
+    button1.pack(pady=5)
 
     root.mainloop()
