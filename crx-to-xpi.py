@@ -1,3 +1,4 @@
+#!/home/benjamin/coding/crx-to-xpi/.venv/bin/python3
 import sys
 import json
 import struct
@@ -86,6 +87,14 @@ class Converter:
 
                 manifest_content = json.loads(manifest)
                 package_name = manifest_content.get('name', 'unknown')
+                if str(package_name).startswith('__MSG_') and str(package_name).endswith('__'):
+                    message = str(package_name).removeprefix('__MSG_').removesuffix('__')
+                    messages_path = os.path.join(tempfile.gettempdir(), extract_path, '_locales', 'en', 'messages.json')
+                    with open(messages_path, 'r') as f:
+                        messages = f.read()
+                    messages_content = json.loads(messages)
+                    package_name = messages_content[message]['message']
+                
                 manifest_content.update({
                     'browser_specific_settings': {
                         'gecko': {
@@ -93,6 +102,7 @@ class Converter:
                         }
                     }
                 })
+                
 
                 background = manifest_content.get('background')
                 if background and 'service_worker' in background:
