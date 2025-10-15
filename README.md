@@ -42,11 +42,11 @@ Fedora:
 
 Mac (Homebrew):
 ```
-# brew install certifi
+$ brew install certifi
 ```
 Then:
 
-`export SSL_CERT_FILE=$(python -m certifi)`\
+`$ export SSL_CERT_FILE=$(python -m certifi)`\
 and rerun the script.
 
 On Mac, even after adding executable permissions to the file, you may be denied permission by the system to run the file. To fix this, navigate to System Settings -> Privacy and Security, scroll down, then allow the app to run.
